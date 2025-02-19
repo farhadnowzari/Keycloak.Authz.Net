@@ -3,6 +3,7 @@ namespace Keycloak.Authz.Net.Tests.Attributes;
 using FluentAssertions;
 using Keycloak.Authz.Net.Attributes;
 using Keycloak.Authz.Net.Tests.Factories;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 
 public class PermissionsResolverTests
@@ -51,7 +52,7 @@ public class PermissionsResolverTests
     public void Should_Resolve_Permission_Placeholders_From_RequestHeader()
     {
         var permission = "grade_{tenant}#create";
-        var httpContext = HttpContextFactory.BuildWithHeaders(new Dictionary<string, StringValues> {
+        var httpContext = HttpContextFactory.Instance.BuildWithHeaders(new Dictionary<string, StringValues> {
             { "tenant", "tenant1" }
         });
         var result = new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Headers);
@@ -62,7 +63,7 @@ public class PermissionsResolverTests
     public void Should_Throw_Argument_Exception_When_A_Placeholder_Cannot_Be_Resolved_From_Headers()
     {
         var permission = "grade_{tenant}#create";
-        var httpContext = HttpContextFactory.BuildWithHeaders([]);
+        var httpContext = HttpContextFactory.Instance.BuildWithHeaders([]);
         Action act = () => new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Headers);
         act.Should().Throw<ArgumentException>().WithMessage("The placeholder 'tenant' could not be resolved from the headers.");
     }
@@ -71,7 +72,7 @@ public class PermissionsResolverTests
     public void Should_Resolve_Permission_Placeholders_From_QueryString()
     {
         var permission = "grade_{type}#create";
-        var httpContext = HttpContextFactory.BuildWithQueryString(new Dictionary<string, StringValues> {
+        var httpContext = HttpContextFactory.Instance.BuildWithQueryString(new Dictionary<string, StringValues> {
             { "type", "semester" }
         });
         var result = new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Query);
@@ -81,7 +82,7 @@ public class PermissionsResolverTests
     public void Should_Throw_Argument_Exception_When_A_Placeholder_Cannot_Be_Resolved_From_Query()
     {
         var permission = "grade_{type}#create";
-        var httpContext = HttpContextFactory.BuildWithQueryString([]);
+        var httpContext = HttpContextFactory.Instance.BuildWithQueryString([]);
         Action act = () => new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Query);
         act.Should().Throw<ArgumentException>().WithMessage("The placeholder 'type' could not be resolved from the query.");
     }
@@ -90,7 +91,7 @@ public class PermissionsResolverTests
     {
         var permission = "grade_{id}#create";
         var id = Guid.NewGuid().ToString();
-        var httpContext = HttpContextFactory.BuildWithRouteParam("id", id);
+        var httpContext = HttpContextFactory.Instance.BuildWithRouteParam("id", id);
         var result = new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Params);
         result.Should().Contain($"grade_{id}#create");
     }
@@ -99,7 +100,7 @@ public class PermissionsResolverTests
     public void Should_Throw_Argument_Exception_When_A_Placeholder_Cannot_Be_Resolved_From_Route_Params()
     {
         var permission = "grade_{id}#create";
-        var httpContext = HttpContextFactory.BuildWithRouteParam("type", "semester");
+        var httpContext = HttpContextFactory.Instance.BuildWithRouteParam("type", "semester");
         Action act = () => new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Params);
         act.Should().Throw<ArgumentException>().WithMessage("The placeholder 'id' could not be resolved from the route parameters.");
     }
@@ -109,7 +110,7 @@ public class PermissionsResolverTests
     {
         var permission = "grade_{id}#create";
         var id = Guid.NewGuid().ToString();
-        var httpContext = HttpContextFactory.BuildWithBody(new Dictionary<string, string> {
+        var httpContext = HttpContextFactory.Instance.BuildWithBody(new Dictionary<string, string> {
             { "id", id }
         });
         var result = new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Body);
@@ -120,7 +121,7 @@ public class PermissionsResolverTests
     public void Should_Throw_Argument_Exception_When_A_Placeholder_Cannot_Be_Resolved_From_Body()
     {
         var permission = "grade_{id}#create";
-        var httpContext = HttpContextFactory.BuildWithBody(new Dictionary<string, string> {
+        var httpContext = HttpContextFactory.Instance.BuildWithBody(new Dictionary<string, string> {
             { "type", "semester" }
         });
         Action act = () => new PermissionsResolver([permission], httpContext).Resolve(PlaceholderSource.Body);
