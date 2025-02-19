@@ -1,0 +1,20 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "1.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet pack src/Keycloak.Authz.Net -c Release /p:Version=$PACKAGE_VERSION
+      - run: dotnet nuget push src/Keycloak.Authz.Net/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_APIKEY }} --source https://api.nuget.org/v3/index.json

@@ -1,0 +1,1 @@
+This package provides Keycloak's fine-grained authorization in dotnet. Check the [Repository](https://github.com/farhadnowzari/Keycloak.Authz.Net).
