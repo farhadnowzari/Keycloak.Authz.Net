@@ -32,7 +32,7 @@ Just simply make a PR and we will check it out together.
 ## Resources
 Check the [Documentation] for more info about how to set it up.
 
-For an example project, check [example](https://github.com/farhadnowzari/Keycloak.Authz.Net/example)
+For an example project, check [example](https://github.com/farhadnowzari/Keycloak.Authz.Net/tree/main/example)
 
 For more information on Keycloak fine-grained authorization check:
 * [My video on it](https://www.youtube.com/watch?v=E5g50CVRGv8)
