@@ -12,7 +12,7 @@ public class AuthzMiddleware(RequestDelegate next)
         if(endpoint != null) {
             var authzMetadata = endpoint.Metadata.GetMetadata<AuthzAttribute>();
             if(authzMetadata != null) {
-                var authzContext = context.RequestServices.GetRequiredService<KeycloakAuthzContext>();
+                var authzContext = context.RequestServices.GetRequiredService<AuthzContext>();
                 var resolvedPermissions = new PermissionsResolver(authzMetadata.Permissions, context).Resolve(authzMetadata.PlaceholderSource);
                 var result = await authzContext.AuthorizeAsync(resolvedPermissions, authzMetadata.ResourceFormat, context.RequestAborted);
                 if(!result) {

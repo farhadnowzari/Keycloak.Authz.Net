@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace Keycloak.Authz.Net;
 
-public class KeycloakAuthzContext(IOptions<AuthzOptions> authzOptions, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, ILogger<KeycloakAuthzContext> logger)
+public class AuthzContext(IOptions<AuthzOptions> authzOptions, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, ILogger<AuthzContext> logger)
 {
     internal const string HttpClientKey = "keycloak-authz";
     internal const string GrantType = "urn:ietf:params:oauth:grant-type:uma-ticket";

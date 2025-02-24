@@ -19,11 +19,11 @@ public static class DI
         services.Configure(configure);
         var options = new AuthzOptions();
         configure(options);
-        services.AddHttpClient(KeycloakAuthzContext.HttpClientKey, config =>
+        services.AddHttpClient(AuthzContext.HttpClientKey, config =>
         {
             config.BaseAddress = new Uri(options.BaseUrl);
         });
-        services.AddScoped<KeycloakAuthzContext>();
+        services.AddScoped<AuthzContext>();
         return services;
     }
 
