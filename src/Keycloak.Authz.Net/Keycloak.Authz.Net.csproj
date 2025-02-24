@@ -8,7 +8,6 @@
     <PackageTags>C#;dotnet;keycloak;authorization;fine-grained authorization;rbac;abac;rebac</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Nullable>disable</Nullable>
-    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
